@@ -3,7 +3,7 @@ module Enumerable
     return to_enum unless block_given?
 
     n = 0
-    while n < self.size
+    while n < size
       yield(self[n])
       n += 1
     end
@@ -13,7 +13,7 @@ module Enumerable
     return to_enum unless block_given?
 
     n = 0
-    while n < self.size
+    while n < size
       yield(self[n], index)
       n += 1
     end
@@ -61,4 +61,5 @@ module Enumerable
       end
     result
   end
+
 end
