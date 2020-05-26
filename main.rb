@@ -50,6 +50,14 @@ module Enumerable
 		true
 	  end
 
+	  def my_map(&block)
+	    result = []
+		    self.my_each do |item|
+		      result << block.call(item)
+		    end
+	    result
+	  end
+
 
 
 end
