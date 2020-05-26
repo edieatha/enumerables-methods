@@ -33,14 +33,14 @@ Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 #Style/ExponentialNotation:
  # Enabled: false
-Style/HashEachMethods:
-  Enabled: false
-Style/HashTransformKeys:
-  Enabled: false
-Style/HashTransformValues:
-  Enabled: false
-Style/SlicingWithRange:
-  Enabled: false
+# Style/HashEachMethods:
+#   Enabled: false
+# Style/HashTransformKeys:
+#   Enabled: false
+# Style/HashTransformValues:
+#   Enabled: false
+# Style/SlicingWithRange:
+#   Enabled: false
 
 
 Layout/HashAlignment:
