@@ -17,4 +17,12 @@ module Enumerable
     end
   end
 
+def my_select(&block)
+    result =[]
+    self.my_each do |item|
+      result << item if block.call(item) == true
+    end
+    result
+  end
+
 end
