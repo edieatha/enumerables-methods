@@ -36,6 +36,7 @@ $ cd eenumerable-methods
 3) Load the module. Note: make sure to prepend the current path
 ```ruby
 require "./main.rb"
+```
 
 # Author
 
