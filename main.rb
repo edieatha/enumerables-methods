@@ -73,7 +73,7 @@ module Enumerable
     enum = to_enum
     result = []
     my_each do
-      result << if proc != nil ? proc.call(enum.next) : yield(enum.next)
+      result << !proc.nil? ? proc.call(enum.next) : yield(enum.next)
     end
     result
   end
