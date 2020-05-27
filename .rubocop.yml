@@ -1,66 +1,46 @@
+# rubocop:disable Style/CaseEquality
+
 AllCops:
-  TargetRubyVersion: 2.7
   Exclude:
-    - "README.md"
+    - "bin/*"
+    - "db/**/*"
+    - "config/**/*"
     - "Guardfile"
     - "Rakefile"
-
   DisplayCopNames: true
 
-Layout/LineLength:
+Layout/HashAlignment:
   Max: 120
 Metrics/MethodLength:
+  Include: ["app/controllers/*"]
   Max: 20
 Metrics/AbcSize:
-  Max: 50
+  Include: ["app/controllers/*"]
+  Max: 30
 Metrics/ClassLength:
   Max: 150
 Metrics/BlockLength:
   ExcludedMethods: ['describe']
-  Max: 30
-
 
 Style/Documentation:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
-Style/EachForSimpleLoop:
-  Enabled: false
-Style/AndOr:
-  Enabled: false
-Style/DefWithParentheses:
-  Enabled: false
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: never
-Style/ExponentialNotation:
-  Enabled: true
+Lint/RaiseException:
+  Enable: false
+Lint/StructNewOverride:
+  Enable: false
 Style/HashEachMethods:
-  Enabled: false
+  Enable: false
 Style/HashTransformKeys:
-  Enabled: false
+  Enable: false
 Style/HashTransformValues:
-  Enabled: false
-Style/SlicingWithRange:
-  Enabled: false
-
-
-Layout/HashAlignment:
+  Enable: false
+  
+Layout/AlignHash:
   EnforcedColonStyle: key
 Layout/ExtraSpacing:
   AllowForAlignment: false
 Layout/MultilineMethodCallIndentation:
   Enabled: true
   EnforcedStyle: indented
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: false
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: false
-
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: false
-Lint/RaiseException:
-  Enabled: false
-Lint/StructNewOverride:
-  Enabled: false
-
