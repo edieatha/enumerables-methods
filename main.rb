@@ -119,7 +119,6 @@ module Enumerable
         sum = yield(sum, item)
       end
       sum
-    end
   end
 
   def multilply_els
