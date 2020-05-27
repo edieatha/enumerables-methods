@@ -1,5 +1,4 @@
 module Enumerable
-  
   # friends = ['Sharon', 'Leo', 'Leila', 'Brian', 'Arun']
   # friends.my_each { |friend| puts "Hello, " + friend }
   # my_each
@@ -113,17 +112,15 @@ module Enumerable
     if arg[0].is_a?(Symbol)
       my_each{ |item| accumulator = accumulator ? accumulator.send(arg[0], item) : item}
       accumulator
-    else
+      else
       sum = 0
       each do |item|
         sum = yield(sum, item)
-      end
-      sum
+    end
+    sum
   end
 
   def multilply_els
     self.my_inject(:*)
   end
-end
-
 end
