@@ -27,22 +27,28 @@ module Enumerable
     result
   end
 
-  def my_all?
-    return to_enum unless block_given?
-
-      self.my_each do |i|
-        return false if yield(i) == false
-      end
-    true
+  def my_all?(*arg)
+    case result = true
+    when !arg[0].nil?
+      my_each { |i| result = false if arg[0] === i }
+    when !block_given?
+      my_each { |i| result = false if i }
+    else
+      my_each { |i| result = false if yield(i) }
+    end
+    result
   end
 
-  def my_any?
-    return to_enum unless block_given?
-
-      self.my_each do |i|
-        return true if yield i
-      end
-    false
+  def my_any?(*arg)
+    case result = false
+    when !arg[0].nil?
+      my_each { |i| result = true if arg[0] === i }
+    when !block_given?
+      my_each { |i| result = true if i }
+    else
+      my_each { |i| result = true if yield(i) }
+    end
+    result
   end
 
   def my_none?
@@ -54,12 +60,52 @@ module Enumerable
     true
   end
 
-  def my_map(&block)
+  # [4, 5, 6].my_count => 3
+  # [4, 5, 6].my_count(5) => 5
+  # [4, 5, 6].my_count { |x| x > 4 } => 2
+  # my_count
+  def my_count(result = nil)
+    return result if result
+    return length unless block_given?
+
+    my_select { |x| yield x }.length
+  end
+
+  # [1,2,3,4,5].my_map { |x| x * 2 }
+  # my_proc = proc{ |x| x*2 }
+  # p [1, 2, 3, 4].my_map(&my_proc)
+  # my_map
+  def my_map(proc=nil)
+    return enum_for(:my_map) unless proc || block_given?
+
+    enum = self.to_enum
     result = []
-      self.my_each do |item|
-        result << block.call(item)
-      end
+    my_each do
+      result << (proc != nil ? proc.call(enum.next) : yield(enum.next))
+    end
     result
   end
+
+  # puts [1, 2, 3, 4].my_inject(:*)
+  # my_inject
+  def my_inject(*arg)
+    accumulator = arg[0] if arg[0].is_a?(Integer)
+
+    if arg[0].is_a?(Symbol)
+      my_each{ |item| accumulator = accumulator ? accumulator.send(arg[0], item) : item}
+      accumulator
+    else
+      sum = 0
+      each do |item|
+        sum = yield(sum, item)
+      end
+      sum
+    end
+  end
+
+  def multilply_els
+    self.my_inject(:*)
+  end
+end
 
 end
