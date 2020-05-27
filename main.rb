@@ -73,7 +73,7 @@ module Enumerable
     enum = to_enum
     result = []
     my_each do
-      result << (proc != nil ? proc.call(enum.next) : yield(enum.next))
+      result << if proc != nil ? proc.call(enum.next) : yield(enum.next)
     end
     result
   end
@@ -97,39 +97,3 @@ module Enumerable
     my_inject(:*)
   end
 end
-
-# my_each
-# friends = ['Sharon', 'Leo', 'Leila', 'Brian', 'Arun']
-# friends.my_each { |friend| puts "Hello, " + friend }
-
-# my_each_with_index
-# fruits = ["apple", "banana", "strawberry", "pineapple"]
-# fruits.each_with_index { |fruit, index| puts fruit if index.even?
-
-# my_select
-# p [1, 2, 3, 4, 6].my_select{ |i| i.even?}
-
-# my_all
-# puts [1, 2, 3, 4].my_all?{ |i| i.even?}
-# puts [1, 2, 3, 4].my_all?{ |i| i < 6}
-
-# my_any
-# puts [1, 2, 3, 4].my_any?{ |i| i.even?}
-# puts [1, 2, 3, 4].my_any?{ |i| i > 6}
-
-# my_none
-# puts [1, 2, 3, 4].my_none?{ |i| i.even?}
-# puts [1, 2, 3, 4].my_none?{ |i| i > 6}
-
-# my_count
-# [4, 5, 6].my_count => 3
-# [4, 5, 6].my_count(5) => 5
-# [4, 5, 6].my_count { |i| i > 4 } => 2
-
-# my_map
-# [1,2,3,4,5].my_map { |i| i * 2 }
-# my_proc = proc{ |i| i*2 }
-# p [1, 2, 3, 4].my_map(&my_proc)
-
-# my_inject
-# puts [1, 2, 3, 4].my_inject(:*)
