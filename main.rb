@@ -123,4 +123,5 @@ module Enumerable
   def multilply_els
     self.my_inject(:*)
   end
+  
 end
