@@ -20,6 +20,8 @@ module Enumerable
   end
 
   def my_select(&block)
+    return to_enum(:my_select) unless block_given?
+
     result = []
     my_each do |item|
       result << item if block.call(item) == true
@@ -28,43 +30,65 @@ module Enumerable
   end
 
   def my_all?(*arg)
-    case result = true
-    when !arg[0].nil?
-      my_each { |i| result = false if arg[0] == i }
-    when !block_given?
-      my_each { |i| result = false if i }
+    case block_true = true
+    when arg.nil? && !block_given?
+      my_each { |i| block_true = false unless i.nil? || !i }
+    when arg.nil?
+      my_each { |i| block_true = false if yield(i) }
+    when arg.is_a?(Regexp)
+      my_each { |i| block_true = false if i.match(arg) }
+    when arg.is_a?(Module)
+      my_each { |i| block_true = false if i.is_a?(arg) }
     else
-      my_each { |i| result = false if yield(i) }
+      my_each { |i| block_true = false if i == arg }
     end
-    result
+    block_true
   end
 
-  def my_any?(*arg)
-    case result = false
-    when !arg[0].nil?
-      my_each { |i| result = true if arg[0] == i }
-    when !block_given?
-      my_each { |i| result = true if i }
+  def my_any?(arg = nil)
+    case block_true = false
+    when arg.nil? && !block_given?
+      my_each { |i| block_true = true unless i.nil? || !i }
+    when arg.nil?
+      my_each { |i| block_true = true if yield(i) }
+    when arg.is_a?(Regexp)
+      my_each { |i| block_true = true if i.match(arg) }
+    when arg.is_a?(Module)
+      my_each { |i| block_true = true if i.is_a?(arg) }
     else
-      my_each { |i| result = true if yield(i) }
+      my_each { |i| block_true = true if i == arg }
     end
-    result
+    block_true
   end
 
   def my_none?
-    return to_enum unless block_given?
-
-    my_each do |i|
-      return false if yield(i) == true
+    case block_true = true
+    when arg.nil? && !block_given?
+      my_each { |i| block_true = false unless i.nil? || !i }
+    when arg.nil?
+      my_each { |i| block_true = false if yield(i) }
+    when arg.is_a?(Regexp)
+      my_each { |i| block_true = false if i.match(arg) }
+    when arg.is_a?(Module)
+      my_each { |i| block_true = false if i.is_a?(arg) }
+    else
+      my_each { |i| block_true = false if i == arg }
     end
-    true
+    block_true
   end
 
   def my_count(result = nil)
-    return result if result
-    return length unless block_given?
+    array = is_a?(Range) ? to_a : self
 
-    my_select { |i| yield i }.length
+    return array.length unless block_given? || result
+
+    true_items = []
+    if result
+      array.my_each { |item| true_items << item if item == result}
+    else
+      array.my_each{ |item| true_items << item if yield(item) === true}
+    end
+    true_items.length
   end
 
   def my_map(proc = nil)
