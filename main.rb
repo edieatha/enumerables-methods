@@ -51,20 +51,8 @@ module Enumerable
     false
   end
 
-  def my_none?(arg = nil)
-    case block_true = true
-    when arg.nil? && !block_given?
-      my_each { |i| block_true = false unless i.nil? || !i }
-    when arg.nil?
-      my_each { |i| block_true = false if yield(i) }
-    when arg.is_a?(Regexp)
-      my_each { |i| block_true = false if i.match(arg) }
-    when arg.is_a?(Module)
-      my_each { |i| block_true = false if i.is_a?(arg) }
-    else
-      my_each { |i| block_true = false if i == arg }
-    end
-    block_true
+  def my_none?(arg = nil, &block)
+    !my_any?(arg, &block)
   end
 
   def my_count(result = nil)
