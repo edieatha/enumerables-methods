@@ -29,36 +29,26 @@ module Enumerable
     result
   end
 
-  def my_all?(*arg)
-    case block_true = true
-    when arg.nil? && !block_given?
-      my_each { |i| block_true = false unless i.nil? || !i }
-    when arg.nil?
-      my_each { |i| block_true = false if yield(i) }
-    when arg.is_a?(Regexp)
-      my_each { |i| block_true = false if i.match(arg) }
-    when arg.is_a?(Module)
-      my_each { |i| block_true = false if i.is_a?(arg) }
+  def my_all?(*args)
+    if !args[0].nil?
+      my_each { |i| return false unless args[0] === i }
+    elsif block_given?
+      my_each { |i| return false unless yield(i) }
     else
-      my_each { |i| block_true = false if i == arg }
+      my_each { |i| return false unless i }
     end
-    block_true
+    true
   end
 
-  def my_any?(arg = nil)
-    case block_true = false
-    when arg.nil? && !block_given?
-      my_each { |i| block_true = true unless i.nil? || !i }
-    when arg.nil?
-      my_each { |i| block_true = true if yield(i) }
-    when arg.is_a?(Regexp)
-      my_each { |i| block_true = true if i.match(arg) }
-    when arg.is_a?(Module)
-      my_each { |i| block_true = true if i.is_a?(arg) }
+  def my_any?(*arg)
+    if !arg[0].nil?
+      my_each { |i| return true if arg[0] === i }
+    elsif block_given?
+      my_each { |i| return true if yield(i) }
     else
-      my_each { |i| block_true = true if i == arg }
+      my_each { |i| return true if i }
     end
-    block_true
+    false
   end
 
   def my_none?(arg = nil)
