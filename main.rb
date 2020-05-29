@@ -61,7 +61,7 @@ module Enumerable
     block_true
   end
 
-  def my_none?
+  def my_none?(arg = nil)
     case block_true = true
     when arg.nil? && !block_given?
       my_each { |i| block_true = false unless i.nil? || !i }
