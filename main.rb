@@ -92,12 +92,15 @@ module Enumerable
   end
 
   def my_map(proc = nil)
-    return enum_for(:my_map) unless proc || block_given?
-
-    enum = to_enum
+    arr = is_a?(Array) ? self : to_a
     result = []
-    my_each do
-      result << !proc.nil? ? proc.call(enum.next) : yield(enum.next)
+
+    if !proc.nil?
+      arr.my_each { |item| result << proc.call(item) }
+    else
+      return to_enum(:my_map) unless block_given?
+
+      arr.my_each { |item| result << yield(item) }
     end
     result
   end
